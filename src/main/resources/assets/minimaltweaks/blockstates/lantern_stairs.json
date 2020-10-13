@@ -1,0 +1,19 @@
+{
+	"variants": {
+		"facing=east": {
+			"model": "minimaltweaks:block/lantern_stairs"
+		},
+		"facing=north": {
+			"model": "minimaltweaks:block/lantern_stairs",
+			"y": 270
+		},
+		"facing=south": {
+			"model": "minimaltweaks:block/lantern_stairs",
+			"y": 90
+		},
+		"facing=west": {
+			"model": "minimaltweaks:block/lantern_stairs",
+			"y": 180
+		}
+	}
+}

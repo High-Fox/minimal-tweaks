@@ -1,0 +1,6 @@
+{
+  "parent": "minimaltweaks:block/flower_pot_crop",
+  "textures": {
+    "crop": "minecraft:block/wheat_stage7"
+  }
+}
