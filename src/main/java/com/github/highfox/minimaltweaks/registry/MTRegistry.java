@@ -4,7 +4,6 @@ import com.github.highfox.minimaltweaks.MTConfig;
 import com.github.highfox.minimaltweaks.MinimalTweaks;
 import com.github.highfox.minimaltweaks.crafting.SolidifyConcreteRecipe;
 import com.github.highfox.minimaltweaks.crafting.StrippedLogsRecipe;
-import com.github.highfox.minimaltweaks.crafting.conditions.ConfigTrueCondition;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -15,7 +14,6 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -48,8 +46,6 @@ public class MTRegistry {
 
 	@SubscribeEvent
 	public static void registerRecipes(RegistryEvent.Register<IRecipeSerializer<?>> event) {
-		CraftingHelper.register(ConfigTrueCondition.Serializer.INSTANCE);
-
 		CRAFTING_SPECIAL_LOGSTRIPPING = registerRecipe(new SpecialRecipeSerializer<>(StrippedLogsRecipe::new), "crafting_special_logstripping");
 		CRAFTING_SPECIAL_CONCRETESOLIDIFYING = registerRecipe(new SpecialRecipeSerializer<>(SolidifyConcreteRecipe::new), "crafting_special_concretesolidifying");
 	}

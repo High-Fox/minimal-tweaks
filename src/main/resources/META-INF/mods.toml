@@ -1,12 +1,12 @@
 modLoader="javafml"
 license="All rights reserved"
 loaderVersion="[28,)"
-issueTrackerURL="https://github.com/High-Fox/MinimalTweaks/issues"
+issueTrackerURL="https://github.com/High-Fox/minimal-tweaks/issues"
 [[mods]]
     modId="minimaltweaks"
     version="${version}"
     displayName="Minimal Tweaks"
     authors="HighFox"
     description='''
-Optional tweaks that just make sense.
+Barely noticable tweaks that just make sense.
     '''
