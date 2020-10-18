@@ -12,9 +12,12 @@ import net.minecraft.block.WallTorchBlock;
 import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.CampfireBlockEntity;
+import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -24,11 +27,44 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 
 public class MTEvents {
 	public static MTConfig CONFIG = AutoConfig.getConfigHolder(MTConfig.class).getConfig();
+
+	public static ActionResult onEntityInteract(PlayerEntity player, World world, Hand hand, Entity entity, EntityHitResult hitResult) {
+		if (!player.isSpectator() && entity instanceof ItemFrameEntity && !((ItemFrameEntity)entity).getHeldItemStack().isEmpty()) {
+			if (!player.isSneaking()) {
+				float f = player.pitch;
+				float f1 = player.yaw;
+				Vec3d vec3d = player.getCameraPosVec(1.0F);
+				float f2 = MathHelper.cos(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
+				float f3 = MathHelper.sin(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
+				float f4 = -MathHelper.cos(-f * ((float)Math.PI / 180F));
+				float f5 = MathHelper.sin(-f * ((float)Math.PI / 180F));
+				float f6 = f3 * f4;
+				float f7 = f2 * f4;
+				double d0 = 5.0D;
+				Vec3d vec3d1 = vec3d.add((double)f6 * d0, (double)f5 * d0, (double)f7 * d0);
+				HitResult hitresult = world.raycast(new RaycastContext(vec3d, vec3d1, RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, player));
+				if (hitresult.getType() != HitResult.Type.MISS && hitresult.getType() == HitResult.Type.BLOCK) {
+					BlockPos pos = new BlockPos(hitresult.getPos());
+					BlockEntity tileentity = world.getBlockEntity(pos);
+					if (tileentity instanceof ChestBlockEntity) {
+						player.openHandledScreen(((ChestBlockEntity)tileentity));
+						return ActionResult.SUCCESS;
+					}
+				}
+			}
+		}
+		return ActionResult.PASS;
+	}
 
 	public static ActionResult onTrampleCrops(World world, BlockPos pos, LivingEntity entity) {
 		if (EnchantmentHelper.getEquipmentLevel(Enchantments.FEATHER_FALLING, entity) != 0 && CONFIG.featherFallingStopsTrampling) {
