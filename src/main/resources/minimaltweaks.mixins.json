@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.github.highfox.minimaltweaks.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+  	"BeaconBlockEntityMixin",
+  	"EntityFallMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

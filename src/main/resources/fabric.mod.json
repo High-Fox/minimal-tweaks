@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "minimaltweaks",
+  "version": "${version}",
+
+  "name": "Minimal Tweaks",
+  "description": "Barely noticeable tweaks that just make sense.",
+  "authors": [
+    "HighFox"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/High-Fox/minimal-tweaks"
+  },
+
+  "license": "All Rights Reserved",
+  "icon": "assets/minimaltweaks/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.github.highfox.minimaltweaks.MinimalTweaks"
+    ],
+    "modmenu": [
+      "com.github.highfox.minimaltweaks.util.ConfigMenu"
+    ]
+  },
+  "mixins": [
+    "minimaltweaks.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric": "*",
+    "minecraft": "1.16.x"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}
