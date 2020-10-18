@@ -31,7 +31,7 @@ public class MTEvents {
 	public static MTConfig CONFIG = AutoConfig.getConfigHolder(MTConfig.class).getConfig();
 
 	public static ActionResult onTrampleCrops(World world, BlockPos pos, LivingEntity entity) {
-		if (EnchantmentHelper.getEquipmentLevel(Enchantments.FEATHER_FALLING, entity) != 0) {
+		if (EnchantmentHelper.getEquipmentLevel(Enchantments.FEATHER_FALLING, entity) != 0 && CONFIG.featherFallingStopsTrampling) {
 			return ActionResult.FAIL;
 		}
 
@@ -90,7 +90,7 @@ public class MTEvents {
 				return ActionResult.SUCCESS;
 			}
 
-			if (world.getBlockEntity(pos) instanceof BeaconBlockEntity && player.isSneaking()) {
+			if (world.getBlockEntity(pos) instanceof BeaconBlockEntity && player.isSneaking() && CONFIG.toggleableBeaconBeams) {
 				BeaconBlockEntity blockEntity = (BeaconBlockEntity)world.getBlockEntity(pos);
 				BeaconBeamInternals beaconBeam = (BeaconBeamInternals)blockEntity;
 				beaconBeam.setBeaconBeamEnabled(!beaconBeam.beaconBeamEnabled());

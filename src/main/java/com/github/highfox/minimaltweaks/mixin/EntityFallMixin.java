@@ -21,7 +21,7 @@ public class EntityFallMixin {
 		if (entity instanceof LivingEntity) {
 			ActionResult result = FarmlandTrampleCallback.EVENT.invoker().interact(world, pos, (LivingEntity)entity);
 
-			if (result.isAccepted()) {
+			if (result == ActionResult.PASS || result.isAccepted()) {
 				block.onLandedUpon(world, pos, entity, distance);
 			}
 		} else {
