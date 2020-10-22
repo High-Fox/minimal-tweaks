@@ -1,0 +1,20 @@
+{
+	"text.autoconfig.minimaltweaks.title": "Minimal Tweaks Config",
+	
+	"text.autoconfig.minimaltweaks.option.autoStackUsedPotions": "Automatically stack used potions",
+	"text.autoconfig.minimaltweaks.option.pottableCrops": "Pottable crop seeds",
+	"text.autoconfig.minimaltweaks.option.toggleableBeaconBeams": "Toggleable beacon beams",
+	"text.autoconfig.minimaltweaks.option.featherFallingStopsTrampling": "Feather falling will prevent trampling of crops",
+	"text.autoconfig.minimaltweaks.option.repairableAnvils": "Repairable anvils",
+	"text.autoconfig.minimaltweaks.option.openChestsThroughItemFrames": "Open chests through item frames",
+	"text.autoconfig.minimaltweaks.option.leadBreakSound": "Play a sound when a lead breaks",
+	
+	"text.autoconfig.minimaltweaks.category.soulBlockConversion": "Soul Fire Block Conversion",
+	"text.autoconfig.minimaltweaks.option.soulBlockConversion.enableTorchConversion": "Torches",
+	"text.autoconfig.minimaltweaks.option.soulBlockConversion.enableLanternConversion": "Lanterns",
+	"text.autoconfig.minimaltweaks.option.soulBlockConversion.enableCampfireConversion": "Campfires",
+	
+	"text.autoconfig.minimaltweaks.category.utilityRecipes": "Utility Recipes",
+	"text.autoconfig.minimaltweaks.option.utilityRecipes.strippedLogsCrafting": "Strip logs in a crafting grid",
+	"text.autoconfig.minimaltweaks.option.utilityRecipes.solidifiedConcreteCrafting": "Solidify concrete powder in a crafting grid"
+}

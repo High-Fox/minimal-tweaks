@@ -8,29 +8,31 @@ import me.sargunvohra.mcmods.autoconfig1u.serializer.Toml4jConfigSerializer;
 
 @Config(name = MinimalTweaks.MOD_ID)
 public class MTConfig implements ConfigData {
-	boolean autoStackUsedPotions = true;
-	boolean pottableCrops = true;
-	boolean toggleableBeaconBeams = true;
-	boolean featherFallingStopsTrampling = true;
-	boolean repairableAnvils = true;
-	boolean openChestsThroughItemFrames = true;
-	boolean leadBreakSound = true;
+	public boolean autoStackUsedPotions = true;
+	public boolean pottableCrops = true;
+	public boolean toggleableBeaconBeams = true;
+	public boolean featherFallingStopsTrampling = true;
+	public boolean repairableAnvils = true;
+	public boolean openChestsThroughItemFrames = true;
+	public boolean leadBreakSound = true;
 
-	@ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
-	SoulBlockConversion soulBlockConversion = new SoulBlockConversion();
+	@ConfigEntry.Category("soulBlockConversion")
+	@ConfigEntry.Gui.TransitiveObject
+	public SoulBlockConversion soulBlockConversion = new SoulBlockConversion();
 
-	@ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
-	UtilityRecipes utilityRecipes = new UtilityRecipes();
+	@ConfigEntry.Category("utilityRecipes")
+	@ConfigEntry.Gui.TransitiveObject
+	public UtilityRecipes utilityRecipes = new UtilityRecipes();
 
 	public static class SoulBlockConversion {
-		boolean enableTorchConversion = true;
-		boolean enableLanternConversion = true;
-		boolean enableCampfireConversion = true;
+		public boolean enableTorchConversion = true;
+		public boolean enableLanternConversion = true;
+		public boolean enableCampfireConversion = true;
 	}
 
 	public static class UtilityRecipes {
-		boolean strippedLogsCrafting = true;
-		boolean solidifiedConcreteCrafting = true;
+		public boolean strippedLogsCrafting = true;
+		public boolean solidifiedConcreteCrafting = true;
 	}
 
 	public static void register() {

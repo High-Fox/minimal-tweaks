@@ -21,6 +21,7 @@ import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.PotionItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -37,6 +38,20 @@ import net.minecraft.world.World;
 
 public class MTEvents {
 	public static MTConfig CONFIG = AutoConfig.getConfigHolder(MTConfig.class).getConfig();
+
+	public static ItemStack onItemUseFinish(LivingEntity user, ItemStack usedStack, ItemStack resultStack) {
+		if (user instanceof PlayerEntity) {
+			PlayerEntity player = (PlayerEntity)user;
+			if (usedStack.getItem() instanceof PotionItem) {
+				if (usedStack.getItem() == Items.POTION && CONFIG.autoStackUsedPotions) {
+					if (player.inventory.insertStack(resultStack)) {
+						return ItemStack.EMPTY;
+					}
+				}
+			}
+		}
+		return resultStack;
+	}
 
 	public static ActionResult onEntityInteract(PlayerEntity player, World world, Hand hand, Entity entity, EntityHitResult hitResult) {
 		if (!player.isSpectator() && entity instanceof ItemFrameEntity && !((ItemFrameEntity)entity).getHeldItemStack().isEmpty()) {

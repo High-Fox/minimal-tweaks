@@ -1,0 +1,6 @@
+{
+  "parent": "minimaltweaks:block/flower_pot_stem",
+  "textures": {
+    "plant": "minecraft:block/melon_stem"
+  }
+}

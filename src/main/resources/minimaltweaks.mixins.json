@@ -4,10 +4,12 @@
   "package": "com.github.highfox.minimaltweaks.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-  	"BeaconBlockEntityMixin",
-  	"EntityFallMixin"
+  	"BeaconBeamToggleMixin",
+  	"EntityFallMixin",
+  	"LivingFinishItemUseMixin"
   ],
   "client": [
+  	"ClientNetworkHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

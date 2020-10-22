@@ -9,7 +9,7 @@
     "HighFox"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/minimal-tweaks",
     "sources": "https://github.com/High-Fox/minimal-tweaks"
   },
 
@@ -20,6 +20,9 @@
   "entrypoints": {
     "main": [
       "com.github.highfox.minimaltweaks.MinimalTweaks"
+    ],
+    "client": [
+    	"com.github.highfox.minimaltweaks.MinimalTweaksClient"
     ],
     "modmenu": [
       "com.github.highfox.minimaltweaks.util.ConfigMenu"

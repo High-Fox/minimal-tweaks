@@ -17,7 +17,7 @@ import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.nbt.CompoundTag;
 
 @Mixin(BeaconBlockEntity.class)
-public abstract class BeaconBlockEntityMixin implements BeaconBeamInternals {
+public abstract class BeaconBeamToggleMixin implements BeaconBeamInternals {
 	@Unique
 	private boolean beamEnabled = true;
 
