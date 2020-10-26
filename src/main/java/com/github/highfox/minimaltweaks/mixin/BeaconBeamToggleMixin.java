@@ -12,6 +12,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.github.highfox.minimaltweaks.util.BeaconBeamInternals;
 import com.google.common.collect.ImmutableList;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.nbt.CompoundTag;
@@ -31,6 +33,7 @@ public abstract class BeaconBeamToggleMixin implements BeaconBeamInternals {
 		this.beamEnabled = enabled;
 	}
 
+	@Environment(EnvType.CLIENT)
 	@Inject(method = "getBeamSegments()Ljava/util/List;", at = @At("TAIL"), cancellable = true)
 	private void modifyBeamSegments(CallbackInfoReturnable<List<BeaconBlockEntity.BeamSegment>> cir) {
 		cir.setReturnValue(this.beamEnabled ? cir.getReturnValue() : ImmutableList.of());
