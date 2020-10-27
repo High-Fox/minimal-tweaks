@@ -2,3 +2,4 @@ accessWidener v1 named
 
 accessible field net/minecraft/block/ConcretePowderBlock hardenedState Lnet/minecraft/block/BlockState;
 accessible field net/minecraft/item/AxeItem STRIPPED_BLOCKS Ljava/util/Map;
+accessible field net/minecraft/block/entity/SignBlockEntity text [Lnet/minecraft/text/Text;

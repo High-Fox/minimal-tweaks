@@ -8,11 +8,13 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.block.LanternBlock;
+import net.minecraft.block.WallSignBlock;
 import net.minecraft.block.WallTorchBlock;
 import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.CampfireBlockEntity;
 import net.minecraft.block.entity.ChestBlockEntity;
+import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
@@ -25,6 +27,10 @@ import net.minecraft.item.PotionItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.tag.BlockTags;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -147,6 +153,26 @@ public class MTEvents {
 				beaconBeam.setBeaconBeamEnabled(!beaconBeam.beaconBeamEnabled());
 				blockEntity.markDirty();
 				return ActionResult.SUCCESS;
+			}
+
+			if (state.getBlock().isIn(BlockTags.WALL_SIGNS) && !player.isSneaking() && CONFIG.openChestsThroughSigns) {
+				SignBlockEntity signBlockEntity = (SignBlockEntity)world.getBlockEntity(pos);
+
+				for (Text text : signBlockEntity.text) {
+					Style style = text == null ? null : text.getStyle();
+					if (style != null && style.getClickEvent() != null) {
+						ClickEvent clickEvent = style.getClickEvent();
+						if (clickEvent.getAction() == ClickEvent.Action.RUN_COMMAND) {
+							return ActionResult.PASS;
+						}
+					}
+				}
+
+				if (world.getBlockEntity(pos.offset(state.get(WallSignBlock.FACING).getOpposite())) instanceof ChestBlockEntity) {
+					ChestBlockEntity chest = (ChestBlockEntity)world.getBlockEntity(pos.offset(state.get(WallSignBlock.FACING)));
+					player.openHandledScreen(chest);
+					return ActionResult.SUCCESS;
+				}
 			}
 		}
 		return ActionResult.PASS;

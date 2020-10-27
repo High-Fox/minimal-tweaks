@@ -7,6 +7,7 @@
 	"text.autoconfig.minimaltweaks.option.featherFallingStopsTrampling": "Feather falling will prevent trampling of crops",
 	"text.autoconfig.minimaltweaks.option.repairableAnvils": "Repairable anvils",
 	"text.autoconfig.minimaltweaks.option.openChestsThroughItemFrames": "Open chests through item frames",
+	"text.autoconfig.minimaltweaks.option.openChestsThroughSigns": "Open chests through signs",
 	"text.autoconfig.minimaltweaks.option.leadBreakSound": "Play a sound when a lead breaks",
 	
 	"text.autoconfig.minimaltweaks.category.soulBlockConversion": "Soul Fire Block Conversion",

@@ -14,6 +14,7 @@ public class MTConfig implements ConfigData {
 	public boolean featherFallingStopsTrampling = true;
 	public boolean repairableAnvils = true;
 	public boolean openChestsThroughItemFrames = true;
+	public boolean openChestsThroughSigns = true;
 	public boolean leadBreakSound = true;
 
 	@ConfigEntry.Category("soulBlockConversion")
