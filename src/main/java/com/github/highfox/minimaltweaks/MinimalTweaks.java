@@ -6,7 +6,6 @@ import org.apache.logging.log4j.Logger;
 import com.github.highfox.minimaltweaks.capability.CapabilityHandler;
 import com.github.highfox.minimaltweaks.client.renderer.ToggleableBeaconTileEntityRenderer;
 import com.github.highfox.minimaltweaks.network.MTNetwork;
-import com.github.highfox.minimaltweaks.registry.MTRegistry;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -59,7 +58,7 @@ public class MinimalTweaks {
 	public void blockColorsInit(ColorHandlerEvent.Block event) {
 		BlockColors colors = event.getBlockColors();
 		colors.register((state, world, pos, tintIndex) -> {
-			int i = 7;
+			int i = 6;
 			int j = i * 32;
 			int k = 255 - i * 8;
 			int l = i * 4;

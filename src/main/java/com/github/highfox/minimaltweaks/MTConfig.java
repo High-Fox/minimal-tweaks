@@ -21,6 +21,7 @@ public class MTConfig {
 	public static ForgeConfigSpec.BooleanValue featherFallingStopsTrampling;
 	public static ForgeConfigSpec.BooleanValue repairableAnvils;
 	public static ForgeConfigSpec.BooleanValue openChestsThroughItemFrames;
+	public static ForgeConfigSpec.BooleanValue openChestsThroughSigns;
 	public static ForgeConfigSpec.BooleanValue leadBreakSound;
 
 	static {
@@ -56,6 +57,8 @@ public class MTConfig {
 				.define("repairableAnvils", true);
 		openChestsThroughItemFrames = BUILDER.comment("Lets you open chests through item frames. Sneak for default behaviour")
 				.define("openChestsThroughItemFrames", true);
+		openChestsThroughSigns = BUILDER.comment("Lets you open chests through signs.")
+				.define("openChestsThroughSigns", true);
 		leadBreakSound = BUILDER.comment("Plays a sound when an attached lead breaks")
 				.define("leadBreakSound", true);
 

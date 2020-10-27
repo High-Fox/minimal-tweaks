@@ -1,7 +1,5 @@
-package com.github.highfox.minimaltweaks.registry;
+package com.github.highfox.minimaltweaks;
 
-import com.github.highfox.minimaltweaks.MTConfig;
-import com.github.highfox.minimaltweaks.MinimalTweaks;
 import com.github.highfox.minimaltweaks.crafting.SolidifyConcreteRecipe;
 import com.github.highfox.minimaltweaks.crafting.StrippedLogsRecipe;
 

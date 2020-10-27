@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/flower_pot_cross",
+  "parent": "minimaltweaks:block/flower_pot_stem",
   "textures": {
-    "cross": "minecraft:block/melon_stem"
+    "plant": "minecraft:block/melon_stem"
   }
 }

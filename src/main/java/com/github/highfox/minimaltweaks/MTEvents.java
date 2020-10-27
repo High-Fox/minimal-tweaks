@@ -9,12 +9,15 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.block.LanternBlock;
+import net.minecraft.block.WallSignBlock;
 import net.minecraft.block.WallTorchBlock;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SimpleSound;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -23,9 +26,11 @@ import net.minecraft.item.Items;
 import net.minecraft.item.PotionItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.play.server.SMountEntityPacket;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.BeaconTileEntity;
 import net.minecraft.tileentity.CampfireTileEntity;
 import net.minecraft.tileentity.ChestTileEntity;
+import net.minecraft.tileentity.SignTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.ResourceLocation;
@@ -37,6 +42,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
@@ -54,22 +62,26 @@ import net.minecraftforge.items.ItemHandlerHelper;
 public class MTEvents {
 
 	@SubscribeEvent
-	public static void incomingPacket(VanillaPacketEvent.Incoming<SMountEntityPacket> event) {
+	public static void onIncomingPacket(VanillaPacketEvent.Incoming<SMountEntityPacket> event) {
 		SMountEntityPacket packet = event.getPacket();
-		if (packet.getVehicleEntityId() == -1 && MTConfig.leadBreakSound.get()) {
+		if (packet.getVehicleEntityId() <= 0 && MTConfig.leadBreakSound.get()) {
 			DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> new DistExecutor.SafeRunnable() {
 				private static final long serialVersionUID = -2007016463658846889L;
 
 				@Override
 				public void run() {
-					Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(SoundEvents.ENTITY_ITEM_FRAME_REMOVE_ITEM, 1.5F, 2.0F));
+					ClientWorld world = Minecraft.getInstance().world;
+					Entity entity = world.getEntityByID(packet.getEntityId());
+					if (entity instanceof MobEntity) {
+						world.playSound(Minecraft.getInstance().player, entity.getPosition(), SoundEvents.ENTITY_ITEM_FRAME_REMOVE_ITEM, SoundCategory.PLAYERS, 1.0F, 1.5F);
+					}
 				}
 			});
 		}
 	}
 
 	@SubscribeEvent
-	public static void trampleCrops(BlockEvent.FarmlandTrampleEvent event) {
+	public static void onTrampleCrops(BlockEvent.FarmlandTrampleEvent event) {
 		if (event.getEntity() instanceof LivingEntity && MTConfig.featherFallingStopsTrampling.get()) {
 			LivingEntity entity = (LivingEntity)event.getEntity();
 			if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FEATHER_FALLING, entity.getItemStackFromSlot(EquipmentSlotType.FEET)) != 0) {
@@ -79,7 +91,7 @@ public class MTEvents {
 	}
 
 	@SubscribeEvent
-	public static void registerCapabilities(AttachCapabilitiesEvent<TileEntity> event) {
+	public static void onRegisterCapabilities(AttachCapabilitiesEvent<TileEntity> event) {
 		if (event.getObject() instanceof BeaconTileEntity) {
 			event.addCapability(new ResourceLocation(MinimalTweaks.MOD_ID, "beacon_beam"), new BeaconBeamWrapper());
 		}
@@ -87,9 +99,10 @@ public class MTEvents {
 
 	@SubscribeEvent
 	public static void onPlayerEntityInteract(PlayerInteractEvent.EntityInteractSpecific event) {
+		PlayerEntity player = event.getPlayer();
+		World world = player.world;
+
 		if (event.getTarget() instanceof ItemFrameEntity && !((ItemFrameEntity)event.getTarget()).getDisplayedItem().isEmpty() && MTConfig.openChestsThroughItemFrames.get()) {
-			PlayerEntity player = event.getPlayer();
-			World world = player.world;
 			if (!player.isSneaking()) {
 				float f = player.rotationPitch;
 				float f1 = player.rotationYaw;
@@ -102,7 +115,9 @@ public class MTEvents {
 				float f7 = f2 * f4;
 				double d0 = player.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();
 				Vector3d vec3d1 = vec3d.add((double)f6 * d0, (double)f5 * d0, (double)f7 * d0);
+
 				BlockRayTraceResult raytraceresult = world.rayTraceBlocks(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, player));
+
 				if (raytraceresult.getType() != RayTraceResult.Type.MISS && raytraceresult.getType() == RayTraceResult.Type.BLOCK) {
 					BlockPos pos = raytraceresult.getPos();
 					TileEntity tileentity = world.getTileEntity(pos);
@@ -185,12 +200,33 @@ public class MTEvents {
 			world.playSound(player, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 2.0F, 1.0F);
 		}
 
-		if (world.getTileEntity(pos) instanceof BeaconTileEntity && player.isSneaking()) {
+		if (world.getTileEntity(pos) instanceof BeaconTileEntity && player.isSneaking() && MTConfig.toggleableBeaconBeams.get()) {
 			TileEntity tileentity = world.getTileEntity(pos);
 			tileentity.getCapability(CapabilityHandler.BEACON_BEAM).ifPresent(instance -> instance.toggleBeamEnabled());
 			tileentity.markDirty();
 			event.setCanceled(true);
 			event.setCancellationResult(ActionResultType.SUCCESS);
+		}
+
+		if (state.getBlock().isIn(BlockTags.WALL_SIGNS) && !player.isSneaking() && MTConfig.openChestsThroughSigns.get()) {
+			SignTileEntity sign = (SignTileEntity)world.getTileEntity(pos);
+
+			for (ITextComponent text : sign.signText) {
+				Style style = text.getStyle();
+				if (style != null && style.getClickEvent() != null) {
+					ClickEvent clickEvent = style.getClickEvent();
+					if (clickEvent.getAction() == ClickEvent.Action.RUN_COMMAND) {
+						return;
+					}
+				}
+			}
+
+			if (world.getTileEntity(pos.offset(state.get(WallSignBlock.FACING).getOpposite())) instanceof ChestTileEntity) {
+				ChestTileEntity chest = (ChestTileEntity)world.getTileEntity(pos.offset(state.get(WallSignBlock.FACING)));
+				player.openContainer(chest);
+				event.setCanceled(true);
+				event.setCancellationResult(ActionResultType.SUCCESS);
+			}
 		}
 	}
 

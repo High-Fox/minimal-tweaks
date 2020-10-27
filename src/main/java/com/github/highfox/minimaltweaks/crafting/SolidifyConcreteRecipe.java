@@ -1,7 +1,7 @@
 package com.github.highfox.minimaltweaks.crafting;
 
 import com.github.highfox.minimaltweaks.MTConfig;
-import com.github.highfox.minimaltweaks.registry.MTRegistry;
+import com.github.highfox.minimaltweaks.MTRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ConcretePowderBlock;
