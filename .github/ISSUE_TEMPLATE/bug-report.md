@@ -15,9 +15,10 @@ Description of the bug. Try to be as detailed as possible.
 2. To reliably reproduce the bug
 3. (If possible)
 
-**Version**
-What version of Minimal Tweaks was the bug found in?
-*e.g 1.16.3 Fabric 1.0.1*
+**Versions**
+Minimal Tweaks version
+Fabric Loader version
+Fabric API version
 
 **Crash Reports**
 Upload any crash reports to [Pastebin](https://pastebin.com/) and put the links here.
