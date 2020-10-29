@@ -15,6 +15,11 @@ public class MTConfig {
 	public static ForgeConfigSpec.BooleanValue strippedLogsCrafting;
 	public static ForgeConfigSpec.BooleanValue solidifiedConcreteCrafting;
 
+	public static String CATEGORY_LEADABLE_MOBS = "leadableMobs";
+	public static ForgeConfigSpec.BooleanValue leadableHoglinsAndZoglins;
+	public static ForgeConfigSpec.BooleanValue leadableTurtles;
+	public static ForgeConfigSpec.BooleanValue leadablePandas;
+
 	public static ForgeConfigSpec.BooleanValue autoStackUsedPotions;
 	public static ForgeConfigSpec.BooleanValue pottableCrops;
 	public static ForgeConfigSpec.BooleanValue toggleableBeaconBeams;
@@ -44,6 +49,11 @@ public class MTConfig {
 		solidifiedConcreteCrafting = BUILDER.comment("Make concrete powder solidifiable in a crafting grid with a water bucket")
 				.define("solidifiedConcreteCrafting", true);
 		BUILDER.pop();
+
+		BUILDER.comment("Allow leads to be used on some previously unleadable mobs").push(CATEGORY_LEADABLE_MOBS);
+		leadableHoglinsAndZoglins = BUILDER.define("leadableHoglinsAndZoglins", true);
+		leadableTurtles = BUILDER.define("leadableTurtles", true);
+		leadablePandas = BUILDER.define("leadablePandas", true);
 
 		autoStackUsedPotions = BUILDER.comment("Add the glass bottle received after drinking a potion to an existing stack of glass bottles in the inventory, if one exists")
 			.define("autoStackUsedPotions", true);

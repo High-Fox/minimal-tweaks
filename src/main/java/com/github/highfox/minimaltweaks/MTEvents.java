@@ -19,6 +19,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ItemFrameEntity;
+import net.minecraft.entity.monster.HoglinEntity;
+import net.minecraft.entity.monster.ZoglinEntity;
+import net.minecraft.entity.passive.PandaEntity;
+import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
@@ -98,7 +102,25 @@ public class MTEvents {
 	}
 
 	@SubscribeEvent
-	public static void onPlayerEntityInteract(PlayerInteractEvent.EntityInteractSpecific event) {
+	public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
+		if (event.getEntity() instanceof MobEntity) {
+			MobEntity mob = (MobEntity)event.getEntity();
+			PlayerEntity player = event.getPlayer();
+			ItemStack stack = event.getItemStack();
+
+			if (stack.getItem() == Items.LEAD && !mob.getLeashed()) {
+				if (mob instanceof PandaEntity && MTConfig.leadablePandas.get()
+					|| (mob instanceof HoglinEntity || mob instanceof ZoglinEntity) && MTConfig.leadableHoglinsAndZoglins.get()
+					|| mob instanceof TurtleEntity && MTConfig.leadableTurtles.get()) {
+					mob.setLeashHolder(player, true);
+					stack.shrink(1);
+				}
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void onEntityInteractSpecific(PlayerInteractEvent.EntityInteractSpecific event) {
 		PlayerEntity player = event.getPlayer();
 		World world = player.world;
 
@@ -222,7 +244,7 @@ public class MTEvents {
 			}
 
 			if (world.getTileEntity(pos.offset(state.get(WallSignBlock.FACING).getOpposite())) instanceof ChestTileEntity) {
-				ChestTileEntity chest = (ChestTileEntity)world.getTileEntity(pos.offset(state.get(WallSignBlock.FACING)));
+				ChestTileEntity chest = (ChestTileEntity)world.getTileEntity(pos.offset(state.get(WallSignBlock.FACING).getOpposite()));
 				player.openContainer(chest);
 				event.setCanceled(true);
 				event.setCancellationResult(ActionResultType.SUCCESS);
