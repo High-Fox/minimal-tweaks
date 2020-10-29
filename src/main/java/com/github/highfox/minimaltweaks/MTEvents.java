@@ -20,6 +20,11 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
+import net.minecraft.entity.mob.HoglinEntity;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.ZoglinEntity;
+import net.minecraft.entity.passive.PandaEntity;
+import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -60,8 +65,8 @@ public class MTEvents {
 	}
 
 	public static ActionResult onEntityInteract(PlayerEntity player, World world, Hand hand, Entity entity, EntityHitResult hitResult) {
-		if (!player.isSpectator() && entity instanceof ItemFrameEntity && !((ItemFrameEntity)entity).getHeldItemStack().isEmpty()) {
-			if (!player.isSneaking()) {
+		if (!player.isSpectator()) {
+			if (entity instanceof ItemFrameEntity && !((ItemFrameEntity)entity).getHeldItemStack().isEmpty() && !player.isSneaking()) {
 				float f = player.pitch;
 				float f1 = player.yaw;
 				Vec3d vec3d = player.getCameraPosVec(1.0F);
@@ -73,12 +78,26 @@ public class MTEvents {
 				float f7 = f2 * f4;
 				double d0 = 5.0D;
 				Vec3d vec3d1 = vec3d.add((double)f6 * d0, (double)f5 * d0, (double)f7 * d0);
+
 				HitResult hitresult = world.raycast(new RaycastContext(vec3d, vec3d1, RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, player));
 				if (hitresult.getType() != HitResult.Type.MISS && hitresult.getType() == HitResult.Type.BLOCK) {
 					BlockPos pos = new BlockPos(hitresult.getPos());
 					BlockEntity tileentity = world.getBlockEntity(pos);
 					if (tileentity instanceof ChestBlockEntity) {
 						player.openHandledScreen(((ChestBlockEntity)tileentity));
+						return ActionResult.SUCCESS;
+					}
+				}
+			} else if (entity instanceof MobEntity) {
+				MobEntity mob = (MobEntity)entity;
+				ItemStack stack = player.getStackInHand(hand);
+
+				if (stack.getItem() == Items.LEAD && !mob.isLeashed()) {
+						if (mob instanceof PandaEntity && CONFIG.leadableMobs.leadablePandas
+						|| (mob instanceof HoglinEntity || mob instanceof ZoglinEntity) && CONFIG.leadableMobs.leadableHoglinsAndZoglins
+						|| mob instanceof TurtleEntity && CONFIG.leadableMobs.leadableTurtles) {
+						mob.attachLeash(player, true);
+						stack.decrement(1);
 						return ActionResult.SUCCESS;
 					}
 				}
@@ -169,7 +188,7 @@ public class MTEvents {
 				}
 
 				if (world.getBlockEntity(pos.offset(state.get(WallSignBlock.FACING).getOpposite())) instanceof ChestBlockEntity) {
-					ChestBlockEntity chest = (ChestBlockEntity)world.getBlockEntity(pos.offset(state.get(WallSignBlock.FACING)));
+					ChestBlockEntity chest = (ChestBlockEntity)world.getBlockEntity(pos.offset(state.get(WallSignBlock.FACING).getOpposite()));
 					player.openHandledScreen(chest);
 					return ActionResult.SUCCESS;
 				}

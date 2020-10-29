@@ -25,6 +25,10 @@ public class MTConfig implements ConfigData {
 	@ConfigEntry.Gui.TransitiveObject
 	public UtilityRecipes utilityRecipes = new UtilityRecipes();
 
+	@ConfigEntry.Category("leadableMobs")
+	@ConfigEntry.Gui.TransitiveObject
+	public LeadableMobs leadableMobs = new LeadableMobs();
+
 	public static class SoulBlockConversion {
 		public boolean enableTorchConversion = true;
 		public boolean enableLanternConversion = true;
@@ -34,6 +38,12 @@ public class MTConfig implements ConfigData {
 	public static class UtilityRecipes {
 		public boolean strippedLogsCrafting = true;
 		public boolean solidifiedConcreteCrafting = true;
+	}
+
+	public static class LeadableMobs {
+		public boolean leadableHoglinsAndZoglins = true;
+		public boolean leadableTurtles = true;
+		public boolean leadablePandas = true;
 	}
 
 	public static void register() {
