@@ -23,6 +23,8 @@ public class EntityFallMixin {
 
 			if (result == ActionResult.PASS || result.isAccepted()) {
 				block.onLandedUpon(world, pos, entity, distance);
+			} else {
+				entity.handleFallDamage(distance, 1.0F);
 			}
 		} else {
 			block.onLandedUpon(world, pos, entity, distance);
